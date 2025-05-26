@@ -21,27 +21,44 @@ class SpotifyPlayer:
         )
         self.sp = spotipy.Spotify(auth_manager=self.auth_manager)
 
-        self.emotion_playlists = {
-            'happy': 'spotify:playlist:37i9dQZF1DX3rxVfibe1L0',
-            'sad': 'spotify:playlist:37i9dQZF1DX7qK8ma5wgG1',
-            'angry': 'spotify:playlist:37i9dQZF1DX4eRPd9frC1m',
-            'neutral': 'spotify:playlist:37i9dQZF1DX4sWSpwq3LiO',
-            'surprised': 'spotify:playlist:37i9dQZF1DX0BcQWzuB7ZO',
-            'fear': 'spotify:playlist:37i9dQZF1DX6SpcerLm4x7',
-            'disgust': 'spotify:playlist:37i9dQZF1DWUk47CLxI4Uo'
+        self.emotion_tracks = {
+            'happy': [
+                'spotify:track:0HcHPBu9aaF1MxOiZmUQTl',  # Pharrell Williams - Happy
+                'spotify:track:1rfofaqEpACxVEHIZBJe6W'   # Justin Timberlake - CAN'T STOP THE FEELING!
+            ],
+            'sad': [
+                'spotify:track:4ZxkOaZ9j7TzjYQeC6zU8x',  # Lewis Capaldi - Someone You Loved
+                'spotify:track:1rqqCSm0Qe4I9rUvWncaom'   # Adele - Easy On Me
+            ],
+            'angry': [
+                'spotify:track:1lCRw5FEZ1gPDNPzy1K4zW',  # Linkin Park - One Step Closer
+                'spotify:track:0O45fw2L5vsWpdsOdXwNAR'   # Rage Against The Machine - Killing In the Name
+            ],
+            'neutral': [
+                'spotify:track:3AJwUDP919kvQ9QcozQPxg',  # Queen – Don’t Stop Me Now
+                'spotify:track:2takcwOaAZWiXQijPHIx7B'   # The Chainsmokers - Closer
+            ],
+            'surprised': [
+                'spotify:track:3Zwu2K0Qa5sT6teCCHPShP',  # Imagine Dragons - Thunder
+                'spotify:track:0VjIjW4GlUZAMYd2vXMi3b'   # The Weeknd - Blinding Lights
+            ],
+            'fear': [
+                'spotify:track:6RRNNciQGZEXnqk8SQ9yv5',  # Billie Eilish - Bury A Friend
+                'spotify:track:7BqBn9nzAq8spo5e7cZ0dJ'   # Eminem - Lose Yourself
+            ]
         }
 
-    def play_playlist_for_emotion(self, emotion):
-        uri = self.emotion_playlists.get(emotion, self.emotion_playlists['neutral'])
+    def play_tracks_for_emotion(self, emotion):
+        track_uris = self.emotion_tracks.get(emotion, self.emotion_tracks['neutral'])
         try:
             devices = self.sp.devices()
             if not devices['devices']:
                 print("No active Spotify device found.")
                 return False
 
-            self.sp.start_playback(context_uri=uri)
-            print(f"Now playing {emotion} playlist")
+            self.sp.start_playback(uris=track_uris)
+            print(f"Now playing tracks for emotion: {emotion}")
             return True
         except Exception as e:
-            print(f"Error playing {emotion} playlist: {e}")
+            print(f"Error playing tracks for emotion '{emotion}': {e}")
             return False

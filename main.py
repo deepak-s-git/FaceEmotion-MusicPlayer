@@ -11,7 +11,7 @@ class EmotionMusicPlayer:
         self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
         self.current_emotion = None
-        self.emotion_count = {emo: 0 for emo in self.spotify.emotion_playlists}
+        self.emotion_count = {emo: 0 for emo in self.spotify.emotion_tracks}
         self.emotion_threshold = 3
         self.last_emotion_time = time.time()
         self.cooldown = 15  # seconds
@@ -64,7 +64,7 @@ class EmotionMusicPlayer:
                         (self.current_emotion != emotion or
                          time.time() - self.last_emotion_time > self.cooldown)):
                         print(f"Detected consistent emotion: {emotion}")
-                        if self.spotify.play_playlist_for_emotion(emotion):
+                        if self.spotify.play_tracks_for_emotion(emotion):
                             self.current_emotion = emotion
                             self.last_emotion_time = time.time()
 
@@ -74,7 +74,6 @@ class EmotionMusicPlayer:
 
         cap.release()
         cv2.destroyAllWindows()
-
 
 if __name__ == "__main__":
     EmotionMusicPlayer().run()
